@@ -3,28 +3,22 @@ const bodyParser = require("body-parser");
 const { WebhookClient, Payload } = require("dialogflow-fulfillment");
 const port = 4000;
 
-//create server
+// Create server
 const app = express();
 
-//middleware
+// Middleware
 app.use(bodyParser.json());
 
-
 app.get("/", (req, res) => {
-    res.send("<h1>Welcome, this is a webhook for Line Chatbot !!!</h1>")
-})
+    res.send("<h1>Welcome, this is a webhook for SE NPRU Line Chatbot !!!</h1>")
+});
 
 app.post("/webhook", (req, res) => {
-    //create webhook client
+    // Create webhook client
     const agent = new WebhookClient({
         request: req,
         response: res
     });
-
-    // console.log(
-    //     "Dialogflow Request headers: " + JSON.stringify(req.headers)
-    // );
-    // console.log("Dialogflow Request body: " + JSON.stringify(req.body));
 
     function welcome(agent) {
         agent.add(`Welcome to my agent!`);
@@ -48,7 +42,7 @@ app.post("/webhook", (req, res) => {
             result = "คุณหุ่นดีจุงเบย";
         } else if (bmi >= 23 && bmi <= 24.9) {
             result = "คุณเริ่มจะท้วมแล้วนะ";
-        } else if ((bmi >= 25.8) & (bmi <= 29.9)) {
+        } else if (bmi >= 25.8 && bmi <= 29.9) {
             result = "คุณอ้วนละ ออกกำลังกายหน่อยนะ";
         } else if (bmi > 30) {
             result = "คุณอ้วนเกินไปละ หาหมอเหอะ";
@@ -144,17 +138,216 @@ app.post("/webhook", (req, res) => {
 
         let payload = new Payload("LINE", flexMessage, { sendAsMessage: true });
         agent.add(payload);
-        // agent.add(result);
+    }
+
+    function calculateRectangleArea(agent) {
+        let length = agent.parameters.length;
+        let width = agent.parameters.width;
+        let area = length * width;
+
+        const flexMessage = {
+            "type": "flex",
+            "altText": "Flex Message",
+            "contents": {
+                "type": "bubble",
+                "header": {
+                    "type": "box",
+                    "layout": "vertical",
+                    "contents": [
+                        {
+                            "type": "text",
+                            "text": "Rectangle Area Calculation Result",
+                            "weight": "bold",
+                            "size": "lg",
+                            "align": "center"
+                        }
+                    ]
+                },
+                "body": {
+                    "type": "box",
+                    "layout": "vertical",
+                    "contents": [
+                        {
+                            "type": "text",
+                            "text": "Your Rectangle Area Result",
+                            "weight": "bold",
+                            "size": "md",
+                            "margin": "md"
+                        },
+                        {
+                            "type": "text",
+                            "text": "Length: " + length + " units",
+                            "size": "sm",
+                            "margin": "sm"
+                        },
+                        {
+                            "type": "text",
+                            "text": "Width: " + width + " units",
+                            "size": "sm",
+                            "margin": "sm"
+                        },
+                        {
+                            "type": "separator",
+                            "margin": "lg"
+                        },
+                        {
+                            "type": "text",
+                            "text": "Area: " + area + " square units",
+                            "weight": "bold",
+                            "size": "xl",
+                            "align": "center",
+                            "margin": "lg",
+                            "color": "#00b900"
+                        }
+                    ]
+                }
+            }
+        };
+
+        let payload = new Payload("LINE", flexMessage, { sendAsMessage: true });
+        agent.add(payload);
+    }
+
+    function calculateCircleArea(agent) {
+        let radius = agent.parameters.radius;
+        let area = (Math.PI * radius * radius).toFixed(2);
+
+        const flexMessage = {
+            "type": "flex",
+            "altText": "Flex Message",
+            "contents": {
+                "type": "bubble",
+                "header": {
+                    "type": "box",
+                    "layout": "vertical",
+                    "contents": [
+                        {
+                            "type": "text",
+                            "text": "Circle Area Calculation Result",
+                            "weight": "bold",
+                            "size": "lg",
+                            "align": "center"
+                        }
+                    ]
+                },
+                "body": {
+                    "type": "box",
+                    "layout": "vertical",
+                    "contents": [
+                        {
+                            "type": "text",
+                            "text": "Your Circle Area Result",
+                            "weight": "bold",
+                            "size": "md",
+                            "margin": "md"
+                        },
+                        {
+                            "type": "text",
+                            "text": "Radius: " + radius + " units",
+                            "size": "sm",
+                            "margin": "sm"
+                        },
+                        {
+                            "type": "separator",
+                            "margin": "lg"
+                        },
+                        {
+                            "type": "text",
+                            "text": "Area: " + area + " square units",
+                            "weight": "bold",
+                            "size": "xl",
+                            "align": "center",
+                            "margin": "lg",
+                            "color": "#00b900"
+                        }
+                    ]
+                }
+            }
+        };
+
+        let payload = new Payload("LINE", flexMessage, { sendAsMessage: true });
+        agent.add(payload);
+    }
+
+    function calculateTriangleArea(agent) {
+        let width = agent.parameters.width;
+        let length = agent.parameters.length;
+        let area = (0.5 * width * length).toFixed(2);
+
+        const flexMessage = {
+            "type": "flex",
+            "altText": "Flex Message",
+            "contents": {
+                "type": "bubble",
+                "header": {
+                    "type": "box",
+                    "layout": "vertical",
+                    "contents": [
+                        {
+                            "type": "text",
+                            "text": "Triangle Area Calculation Result",
+                            "weight": "bold",
+                            "size": "lg",
+                            "align": "center"
+                        }
+                    ]
+                },
+                "body": {
+                    "type": "box",
+                    "layout": "vertical",
+                    "contents": [
+                        {
+                            "type": "text",
+                            "text": "Your Triangle Area Result",
+                            "weight": "bold",
+                            "size": "md",
+                            "margin": "md"
+                        },
+                        {
+                            "type": "text",
+                            "text": "Width: " + width + " units",
+                            "size": "sm",
+                            "margin": "sm"
+                        },
+                        {
+                            "type": "text",
+                            "text": "Length: " + length + " units",
+                            "size": "sm",
+                            "margin": "sm"
+                        },
+                        {
+                            "type": "separator",
+                            "margin": "lg"
+                        },
+                        {
+                            "type": "text",
+                            "text": "Area: " + area + " square units",
+                            "weight": "bold",
+                            "size": "xl",
+                            "align": "center",
+                            "margin": "lg",
+                            "color": "#00b900"
+                        }
+                    ]
+                }
+            }
+        };
+
+        let payload = new Payload("LINE", flexMessage, { sendAsMessage: true });
+        agent.add(payload);
     }
 
     let intentMap = new Map();
     intentMap.set("Default Welcome Intent", welcome);
     intentMap.set("Default Fallback Intent", fallback);
     intentMap.set("BMI - custom - yes", bodyMassIndex);
-    agent.handleRequest(intentMap);
+    intentMap.set("Calculate Rectangle Area", calculateRectangleArea);
+    intentMap.set("Calculate Circle Area", calculateCircleArea);
+    intentMap.set("Calculate Triangle Area", calculateTriangleArea);
 
-})
+    agent.handleRequest(intentMap);
+});
 
 app.listen(port, () => {
     console.log("Server is running at http://localhost:" + port);
-})
+});
